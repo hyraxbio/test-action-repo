@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Manager | Jean Schafer</title>
+    <!-- Include the script that enables Netlify Identity on this page. -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body>
+    <!-- Include the script that builds the page and powers Netlify CMS -->
+    <script src="./netlify-cms.js"></script>
+    <script>
+    CMS.registerPreviewStyle("./editor-preview.css");
+    CMS.registerEditorComponent({
+        id: "youtube",
+        label: "Youtube video",
+        fields: [{
+          name: 'youtube_url', 
+          label: 'Enter Youtube URL', 
+          widget: 'string',
+        }],
+        pattern: /{{< shortcodes\/youtube youtube_url="(.*?)" >}}/,
+        fromBlock: function(match) {
+          return {
+            youtube_url: match[1]
+          };
+        },
+        toBlock: function(obj) {
+          return `{{< shortcodes\/youtube youtube_url="${obj.youtube_url}" >}}`
+        },
+        toPreview: function(obj) {
+          const qps = (obj.youtube_url || '').split('?')[1] || '';
+          const id = Object.fromEntries(new URLSearchParams(qps)).v;
+          console.log(id);
+          const markup = `<div class="embedded-video"><iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+          return (markup);
+        }
+      });
+      
+      CMS.registerEditorComponent({
+        id: "image",
+        label: "Image",
+        fields: [{
+          name: 'src', 
+          label: 'Select image', 
+          widget: 'image',
+        }, {
+          name: 'caption', 
+          label: 'Image caption', 
+          widget: 'string'
+        }, {
+          name: 'alt', 
+          label: 'Description of the image for visually impaired users', 
+          widget: 'string',
+        }],
+        pattern: /{{< shortcodes\/responsive-image image_path="(.*?)" alt="(.*?)" caption="(.*?)" >}}/,
+        fromBlock: function(match) {
+          return {
+            src: match[1],
+            alt: match[2],
+            caption: match[3]
+          };
+        },
+        toBlock: function(obj) {
+          const caption = obj.caption ? `caption="${obj.caption}"` : '';
+          const alt = obj.alt ? `alt="${obj.alt}"` : '';
+          return `{{< shortcodes\/responsive-image image_path="${obj.src}" ${alt} ${caption} >}}`
+        },
+        toPreview: function(obj) {
+          let markup;
+          console.log(obj);
+          if (obj.caption) {
+            markup = `<figure><img src="${obj.src}" alt="${obj.alt}"><figcaption>${obj.caption}</figcaption></figure>`;
+          } else {
+            markup =  `<img src="${obj.src}" alt="${obj.src}" />`;
+          }
+          return (markup);
+        }
+      });
+    </script>
+  </body>
+</html>
