@@ -1,0 +1,18 @@
+{{ define "main" }}
+  {{ partial "pandago/content-item/page-banner.html" . }}
+  {{ if .Content}}
+  <section id="main-content" class="panel">
+    <div class="container page-gutters">
+      <div class="text">
+        {{ if .Title }}<h2 class="main-header">{{ .Title }}</h2>{{ end }}
+        <div class="main-block body-text text-align-center">
+          <div class="byline text-align-center margin-bottom-lg">
+            {{ .Params.intro_text }}
+          </div>
+          {{ .Content }}
+        </div>
+      </div>
+    </div>
+  </section>
+  {{ end }}
+{{ end }}

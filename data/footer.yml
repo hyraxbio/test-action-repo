@@ -1,0 +1,7 @@
+copyright:
+  text: Test
+items:
+- text: test@gmail.com
+  type: email
+- text: +27 555 5555
+  type: phone

@@ -1,0 +1,113 @@
+backend:
+  name: github
+  repo: andrew-paterson/jean-schafer
+  base_url: https://9s9ttkn75e.execute-api.eu-west-1.amazonaws.com
+  auth_endpoint: /prod/auth
+  branch: master # Branch to update (optional; defaults to master)
+site_id: www.luddite.ajp-sandbox.co.za
+media_folder: /static/media/images
+public_folder: /media/images
+collections:
+  - name: 'wine-vintages'
+    label: 'Wine vintages'
+    folder: 'content/wine-vintages'
+    media_folder: static/media/downloads/tasting-notes
+    create: true
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    fields:
+      - { label: 'Product', name: 'vintage_code', widget: 'select', options: ['luddite-chenin', 'luddite-shiraz', 'saboteur-red', 'saboteur-white'], required: true }
+      - { label: 'Title - eg Luddite Chenin 2018', name: 'title', widget: 'string', required: true }
+      - { label: 'Year', name: 'year', widget: 'string', required: true }
+      - { label: "PDF download", name: "pdf_tasting_notes", widget: "file" }
+      - { label: 'Body', name: 'body', widget: 'markdown', required: false }
+  - name: 'wines'
+    label: 'Wines'
+    folder: 'content/wines'
+    create: false
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string', required: true }
+      - { label: 'Cover image', name: 'cover_image', widget: 'image', required: true, media_folder: /static/media/images/wines, public_folder: /media/images/wines }
+      - { label: 'Body', name: 'body', widget: 'markdown', required: false }
+  - name: 'blog'
+    label: 'Blog'
+    folder: 'content/blog'
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    filter: {field: "type", value: "posts"}
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string', required: true }
+      - { label: 'Draft', name: 'draft', widget: 'boolean', required: false, default: false }
+      - { label: 'Summary', name: 'summary', widget: 'string', required: false}
+      - { label: 'Cover image', name: 'cover_image', widget: 'image', required: false }
+      - {
+          label: 'Publish Date',
+          name: 'publish_date',
+          widget: 'datetime',
+          date_format: 'YYYY-MM-DD',
+          time_format: 'HH:mm:ss',
+          format: 'YYYY-MM-DD HH:mm:ss',
+        }
+      - { label: 'Body', name: 'body', widget: 'markdown', required: false }
+  - name: "single-pages"
+    label: "Single Pages"
+    files:
+      - label: "Home"
+        name: "home"
+        file: "/content/_index.md"
+        fields:
+          - {label: 'Body', name: 'body', widget: 'markdown', required: false }
+      - label: "About"
+        name: "about"
+        file: "/content/about.md"
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: 'Body', name: 'body', widget: 'markdown', required: false }
+      - label: "Order"
+        name: "order"
+        file: "/content/order.md"
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: 'Body', name: 'body', widget: 'markdown', required: false }
+      - label: "Restaurants"
+        name: "restuarants"
+        file: "/content/restaurants.md"
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: 'Body', name: 'body', widget: 'markdown', required: false }
+      - label: "Stockists"
+        name: "stockists"
+        file: "/content/stockists.md"
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: 'Body', name: 'body', widget: 'markdown', required: false }
+      - label: "Importers"
+        name: "importers"
+        file: "/content/importers.md"
+        fields:
+          - {label: Title, name: title, widget: string}
+          - label: "Importers"
+            name: "importers"
+            widget: "list"
+            summary: '{{fields.name}}'
+            fields: 
+              - {label: Name, name: name, widget: string}
+              - {label: Address, name: address, widget: string}
+              - {label: Region, name: region, widget: select, options: [Africa, Asia, Australia, Europe, New Zealand, South America, USA & Canada, United Kingdom]}
+              - {label: Tel, name: tel, widget: string}
+              - label: Emails
+                name: emails
+                widget: list
+                field: {label: Email, name: email, widget: string}
+              - label: Websites
+                name: websites
+                widget: list
+                field: {label: Website, name: website, widget: string}
+              - {label: Instagram username, name: instagram_username, widget: string}
+      - label: "Contact"
+        name: "contact"
+        file: "/content/contact.md"
+        fields:
+          - {label: Title, name: title, widget: string}
+          - {label: 'Body', name: 'body', widget: 'markdown', required: false }
