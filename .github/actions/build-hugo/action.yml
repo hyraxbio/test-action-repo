@@ -1,14 +1,14 @@
 name: 'Build Hugo'
 description: 'Build a Hugo site'
-# inputs:
-#   who-to-greet:  # id of input
-#     description: 'Who to greet'
-#     required: true
-#     default: 'World'
+inputs:
+  subdir:  # id of input
+    type: string
 runs:
   using: "composite"
   steps:
-    - run: ls
+    - run: |
+        cd ${{ inputs.subdir }}
+        ls
       shell: bash
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
