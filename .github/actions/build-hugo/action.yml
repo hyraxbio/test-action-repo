@@ -6,9 +6,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: |
-        cd ${{ inputs.subdir }}
-        ls
+    - name: Enter dir
+      run: cd ${{ inputs.subdir }}
       shell: bash
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
@@ -35,8 +34,11 @@ runs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
-
-    - run: npm ci
+    - run: |
+        cd ${{ inputs.subdir }}
+        npm ci
       shell: bash
-    - run: hugo --minify
+    - run:  |
+        cd ${{ inputs.subdir }}
+        hugo --minify
       shell: bash
