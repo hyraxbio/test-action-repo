@@ -41,4 +41,6 @@ runs:
           ${{ runner.os }}-node-
 
     - run: npm ci
+      shell: bash
     - run: hugo --minify
+      shell: bash
